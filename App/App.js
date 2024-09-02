@@ -12,9 +12,9 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-        <Stack.Screen name="GoodDayScreen" component={GoodDayScreen} />
+        <Stack.Screen name="Login" component={Login} options={{headerShown: false}} />
+        <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{headerShown: false}} />
+        <Stack.Screen name="GoodDayScreen" component={GoodDayScreen} options={{headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

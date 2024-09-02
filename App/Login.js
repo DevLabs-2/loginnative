@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
 import globalStyles from './styles';
 import GradientButton from './components/GradientButton/gradientButton';
+import ApiCalls from './apiCalls';
 
 const Login = ({navigation}) => {
   const [inputUsername, setinputUsername] = useState('');
@@ -13,11 +14,8 @@ const Login = ({navigation}) => {
     contraseña: "1234"
   })
   const handleLogin = () => {
-    if (inputUsername === 'caca' && inputPassword === 'caca') {
-      navigation.navigate('GoodDayScreen');
-    } else {
-      alert('Login Failed', 'Invalid username or password');
-    }
+    const api = new ApiCalls();
+    api.login(inputUsername, inputPassword);
   };
 
   useEffect(() => {

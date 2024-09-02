@@ -24,7 +24,6 @@ const globalStyles = StyleSheet.create({
     borderRadius: 10,
   },
   button: {
-    padding: 12,
     alignItems: 'center',
     borderRadius: 10,
     width: '80%',
@@ -35,7 +34,7 @@ const globalStyles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: '2%'
+    marginTop: '10%'
   },
   linkText: {
     color: '#007bff',
@@ -56,6 +55,9 @@ const globalStyles = StyleSheet.create({
   },
   buttonContent: {
     marginTop: 10,
+  },
+  registerButton: {
+    backgroundColor: '#000',
   },
 });
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
 import globalStyles from './styles';
-
+import GradientButton from './components/GradientButton/gradientButton';
 const RegisterScreen = ({navigation}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -44,9 +44,9 @@ const RegisterScreen = ({navigation}) => {
         value={password}
         onChangeText={text => setPassword(text)}
       />
-      <TouchableOpacity style={globalStyles.button} onPress={handleRegister}>
-        <Text style={globalStyles.buttonText}>Register</Text>
-      </TouchableOpacity>
+
+      <GradientButton onPress={handleRegister} title={'Registrarse'} style={globalStyles.gradientButton} textStyle={globalStyles.buttonText}/>
+
       <TouchableOpacity onPress={() => {navigation.navigate('Login')}}>
         <Text>ya tengo cuenta!</Text>
       </TouchableOpacity>
