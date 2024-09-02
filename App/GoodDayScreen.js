@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import globalStyles from './styles';
-const GoodDayScreen = () => {
+const GoodDayScreen = ({navigation}) => {
   return (
     <View style={globalStyles.container}>
       <Text style={globalStyles.text}>¡Buen día!</Text>

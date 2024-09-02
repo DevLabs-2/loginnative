@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
 import globalStyles from './styles';
 
-const RegisterScreen = ({ onRegister }) => {
+const RegisterScreen = ({navigation}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
@@ -10,8 +10,7 @@ const RegisterScreen = ({ onRegister }) => {
 
   const handleRegister = () => {
     if (firstName && lastName && username && password) {
-      alert('Registration Successful', 'You can now log in with your credentials');
-      onRegister();
+      navigation.navigate('Login');
     } else {
       alert('Registration Failed', 'Please fill out all fields');
     }
@@ -47,6 +46,9 @@ const RegisterScreen = ({ onRegister }) => {
       />
       <TouchableOpacity style={globalStyles.button} onPress={handleRegister}>
         <Text style={globalStyles.buttonText}>Register</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => {navigation.navigate('Login')}}>
+        <Text>ya tengo cuenta!</Text>
       </TouchableOpacity>
     </View>
   );
