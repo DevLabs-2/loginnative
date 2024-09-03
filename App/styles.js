@@ -6,7 +6,6 @@ const globalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    width: '100%'
   },
   title: {
     fontSize: 24,
@@ -44,17 +43,23 @@ const globalStyles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
-  gradientButton: {
+  buttonContainer: {
     alignItems: 'center',
-    borderRadius: 10,
-    width: '80%',
+    width: '80%', 
     height: 50,
     borderRadius: 15,
     overflow: 'hidden',
-    textAlign: 'center',
   },
-  buttonContent: {
-    marginTop: 10,
+  gradientButton: {
+    width: '100%', 
+    height: '100%', 
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   registerButton: {
     backgroundColor: '#000',

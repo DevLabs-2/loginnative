@@ -5,14 +5,17 @@ import globalStyles from '../../styles';
 
 const GradientButton = ({ onPress, title, style, textStyle }) => {
     return (
-      <LinearGradient
-        colors={['#FF7E5F', '#FFB88C']}
-        style={style}
-      >
-        <TouchableOpacity onPress={onPress} style={globalStyles.buttonContent}>
-          <Text style={textStyle}>{title}</Text>
-        </TouchableOpacity>
-      </LinearGradient>
+      
+      
+      <TouchableOpacity style={globalStyles.buttonContainer} onPress={onPress}>
+        <LinearGradient 
+          colors={['#FF7E5F', '#FFB88C']}
+          style={globalStyles.gradientButton}>
+          <Text style={globalStyles.buttonText}>{title}</Text>
+        </LinearGradient>
+      </TouchableOpacity>
+     
+      
     );
   };
 
