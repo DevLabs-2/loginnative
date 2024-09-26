@@ -50,4 +50,24 @@ export default class ApiCalls {
             return null;
         }
     }
+
+    getEventsByPage = async (page) => {
+        try {
+            const response = await fetch(`http://${server}/api/event/${page-1}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+            
+        } catch (error) {
+            console.error('Error:', error);
+            return null;
+        }
+    }
 }
