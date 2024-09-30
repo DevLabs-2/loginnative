@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
-import globalStyles from './styles';
-import GradientButton from './components/GradientButton/gradientButton';
-import ApiCalls from './apiCalls';
+import globalStyles from '../styles';
+import GradientButton from '../components/GradientButton/gradientButton';
+import ApiCalls from '../apiCalls';
 
 const Login = ({navigation}) => {
   const [inputUsername, setinputUsername] = useState('');
@@ -14,11 +14,9 @@ const Login = ({navigation}) => {
   const handleLogin = async () => {
     const api = new ApiCalls();
     const apiBack = await api.login(inputUsername, inputPassword);
-    console.log(apiBack)
+
     if(apiBack.success){
-      navigation.navigate('GoodDayScreen', {
-        token: apiBack.token,
-      });
+      navigation.navigate('Home');
     }
     else{
       console.log("a")
@@ -50,7 +48,8 @@ const Login = ({navigation}) => {
 
       {regError && <Text style={globalStyles.text}>{error}</Text>}
 
-        <GradientButton onPress={handleLogin} title={'Ingresar'} style={globalStyles.gradientButton} textStyle={globalStyles.buttonText}/>
+        <GradientButton onPress={handleLogin} title={'Ingresar'}/>
+
         <TouchableOpacity onPress={() => {navigation.navigate('RegisterScreen')}}>
           <Text>No tengo cuenta!</Text>
         </TouchableOpacity>

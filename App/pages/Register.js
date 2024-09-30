@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
-import globalStyles from './styles';
-import GradientButton from './components/GradientButton/gradientButton';
-import ApiCalls from './apiCalls';
+import globalStyles from '../styles';
+import GradientButton from '../components/GradientButton/gradientButton';
+import ApiCalls from '../apiCalls';
 const RegisterScreen = ({navigation}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -64,7 +64,7 @@ const RegisterScreen = ({navigation}) => {
         
         {regError && <Text style={globalStyles.text}>{error}</Text>}
 
-        <GradientButton onPress={handleRegister} title={'Registrarse'} style={globalStyles.gradientButton} textStyle={globalStyles.buttonText}/>
+        <GradientButton onPress={handleRegister} title={'Registrarse'}/>
 
         <TouchableOpacity onPress={() => {navigation.navigate('Login')}}>
           <Text>ya tengo cuenta!</Text>

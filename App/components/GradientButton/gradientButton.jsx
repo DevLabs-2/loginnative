@@ -7,16 +7,15 @@ const GradientButton = ({ onPress, title, style, textStyle }) => {
     return (
       
       
-      <TouchableOpacity style={globalStyles.buttonContainer} onPress={onPress}>
+      <TouchableOpacity style={[globalStyles.buttonContainer, style]} onPress={onPress}>
         <LinearGradient 
           colors={['#FF7E5F', '#FFB88C']}
           style={globalStyles.gradientButton}>
-          <Text style={globalStyles.buttonText}>{title}</Text>
+          <Text style={[globalStyles.buttonText, textStyle]}>{title}</Text>
         </LinearGradient>
       </TouchableOpacity>
      
       
     );
   };
-
 export default GradientButton;

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
-import globalStyles from './styles';
-import ApiCalls from './apiCalls';
+import globalStyles from '../styles';
+import ApiCalls from '../apiCalls';
+import AddEventButton from '../components/AddEventButton/addEventButton';
 const apicall = new ApiCalls();
-const GoodDayScreen = ({route, navigation}) => {
+const Home = ({route, navigation}) => {
   const [arrayEvents, setArrayEvents] = useState([]);
   const [page, setPage] = useState(1)
   const callEvents = async (loadPage) => {
     setArrayEvents(await apicall.getEventsByPage(loadPage))
-    
   }
   useEffect(() => {
     console.log(arrayEvents)
@@ -16,14 +16,19 @@ const GoodDayScreen = ({route, navigation}) => {
   useEffect(() => {
     callEvents(page)
   },[page])
-  const {token} = route.params;
+
+  const formPress = () => {
+    navigation.navigate('Form', {
+        
+      });
+}
   const renderItem = ({ item }) => (
     <View style={styles.card}>
         <Text style={styles.title}>{item.name}</Text>
         <Text style={styles.description}>{item.description}</Text>
         <Text style={styles.duration}>Duración: {item.duration_in_minutes} mins</Text>
         <Text style={styles.price}>Precio: ${item.price}</Text>
-        <Text style={styles.date}>Fecha de Inicio: {item.start_date}</Text>
+        <Text style={styles.date}>Fecha de Inicio: {new Date(item.start_date).toLocaleDateString()}</Text>
         <Text style={[styles.status, item.enabled_for_enrollment === "1" ? styles.enabled : styles.disabled]}>
             {item.enabled_for_enrollment === "1" ? 'Habilitado' : 'No Habilitado'}
         </Text>
@@ -37,8 +42,7 @@ const GoodDayScreen = ({route, navigation}) => {
             keyExtractor={(item) => item.id.toString()}
         />
     <View style={globalStyles.container}>
-      <Text style={globalStyles.text}>¡Buen día!</Text>
-      <Text style={{textAlign: 'center', display: 'flex', justifyContent: 'center', flexWrap: 'wrap', maxWidth: '80%'}}>{`Tu token es \n ${token}`}</Text>
+      <AddEventButton onPress={formPress}/>
     </View>
     </>
   );
@@ -89,4 +93,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default GoodDayScreen;
+export default Home;
