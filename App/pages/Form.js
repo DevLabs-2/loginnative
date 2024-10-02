@@ -20,42 +20,61 @@ const Form = ({navigation, route}) => {
     const [ubicacion, setUbicacion] = useState('');
 
     const [categorias, setCategorias] = useState(null);
-    const [ubicaciones, setUbicaciones] = useState(null)
+    const [ubicaciones, setUbicaciones] = useState(null);
+
+    const [categoriasObj, setCategoriasObj] = useState(null);
+    const [ubicacionesObj, setUbicacionesObj] = useState(null);
+
     const apiCalls = new ApiCalls();
     const getCategoriesAndLocations = async () => {
-        setCategorias((await apiCalls.getEventCategories()).map(item => item.name))
-        setUbicaciones((await apiCalls.getEventLocations()).map(item => item.name))
+        setCategoriasObj(await apiCalls.getEventCategories())
+        setUbicacionesObj(await apiCalls.getEventLocations(token))
     }
-
+    
     //INICIALIZACION
     useEffect(() => {
         getCategoriesAndLocations();
     },[])
+    useEffect(() => {
+        if(categoriasObj !== null){
+            setCategorias(categoriasObj.map(item => item.name));
+        }
+        
+    },[categoriasObj])
+    useEffect(() => {
+        if(ubicacionesObj !== null){
+            setUbicaciones(ubicacionesObj.map(item => item.name));
+        }
+    },[ubicacionesObj])
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        const catId = categoriasObj.find((item) => item.name === categoria).id;
+        const ubiId = ubicacionesObj.find((item) => item.name === ubicacion).id;
+
         const eventoData = {
-            nombreEvento,
-            descripcion,
-            duracion: parseInt(duracion, 10),
-            maxAsistentes: parseInt(maxAsistentes, 10),
-            precio: parseFloat(precio),
-            fechaInicio,
-            categoria,
-            ubicacion,
+            name: nombreEvento,
+            description: descripcion,
+            id_event_category: catId,
+            id_event_location: ubiId,
+            start_date: validarFecha(fechaInicio).date,
+            duration_in_minutes: parseInt(duracion, 10),
+            price: parseFloat(precio),
+            max_assistance: parseInt(maxAsistentes, 10),
+            
         };
 
         if (checkBlanks() && checkValidations()) {
             setEvent(eventoData);
             setModalEvent(true);
         } else {
-            alert("Todos los campos deben estar llenos y ser válidos");
+            alert("Todos los campos deben estar llenos y ser válidos. El nombre y descripcion deben ser de al menos 3 caracteres.");
         }
     };
 
     //cuando hay confirm del modal, se triggerea esto
     useEffect(() => {
         if(modalConfirm){
-            apiCalls.uploadEvent(event);
+            apiCalls.uploadEvent(event, token)
             setModalConfirm(false);
         }
     },[modalConfirm])
@@ -76,12 +95,27 @@ const Form = ({navigation, route}) => {
 
     const checkValidations = () => {
         return (
+            nombreEvento.length > 2 &&
+            descripcion.length > 2 &&
             Number.isInteger(parseInt(duracion, 10)) &&
             Number.isInteger(parseInt(maxAsistentes, 10)) &&
             !isNaN(parseFloat(precio)) &&
-            !isNaN(Date.parse(fechaInicio))
+            validarFecha(fechaInicio).success
         );
     };
+
+    validarFecha = (dateStr) => {
+        let result = {
+            success: false,
+            date: undefined
+        };
+        let dateObj = new Date(dateStr);
+        if (!isNaN(dateObj.getTime())) {
+            result.success = true;
+            result.date = dateObj;
+        }
+        return result;
+    }
 
     return (
         <>

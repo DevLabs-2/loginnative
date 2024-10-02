@@ -71,24 +71,14 @@ export default class ApiCalls {
         }
     }
 
-    uploadEvent = async (nombreEvento, descripcion, categoriaId, ubicacionId, fechaInicio, duracion, precio, maxAsistentes, token) => {
-        const eventoData = {
-            name: nombreEvento,
-            description: descripcion,
-            id_event_category: categoriaId,
-            id_event_location: ubicacionId,
-            start_date: fechaInicio,
-            duration_in_minutes: duracion,
-            price: precio,
-            enabled_for_enrollment: true,
-            max_assistance: maxAsistentes,
-        };
+    uploadEvent = async (eventoData, token) => {
+        console.log(eventoData)
         try {
             const response = await fetch(`http://${server}/api/event/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `${token}`
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(eventoData),
             });
@@ -100,16 +90,17 @@ export default class ApiCalls {
             }
             return data;
         } catch (error) {
-            console.error('Error:', error);
+            console.log('Error:', error);
         }
     }
 
-    getEventLocations = async () => {
+    getEventLocations = async (token) => {
         try {
-            const response = await fetch(`http://${server}/api/location/`, {
+            const response = await fetch(`http://${server}/api/event-location/`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             });
     
