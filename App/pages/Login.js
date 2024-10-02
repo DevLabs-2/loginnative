@@ -14,9 +14,11 @@ const Login = ({navigation}) => {
   const handleLogin = async () => {
     const api = new ApiCalls();
     const apiBack = await api.login(inputUsername, inputPassword);
-
+    console.log(apiBack)
     if(apiBack.success){
-      navigation.navigate('Home');
+      navigation.navigate('Home', {
+        token: apiBack.token,
+      });
     }
     else{
       console.log("a")

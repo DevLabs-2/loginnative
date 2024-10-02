@@ -1,16 +1,16 @@
-import { StyleSheet, Modal } from 'react-native'
+import { StyleSheet, Modal, TouchableOpacity } from 'react-native'
 import { View, Text } from 'react-native-web'
 
-const EventModal = ({visibility, confirmation, event}) => {
+const EventModal = ({visible, setVisibility, setConfirmation, event}) => {
 
     return(
         <>
             <Modal
-                animationType="slide"
+                animationType="fade"
                 transparent={true}
-                visible={modalVisible}
+                visible={visible}
                 onRequestClose={() => {
-                    visibility(false);
+                    setVisibility(false);
                 }}
             >
                 <View style={styles.modalContainer}>
@@ -28,13 +28,13 @@ const EventModal = ({visibility, confirmation, event}) => {
                         <View style={styles.container}>
                         <TouchableOpacity
                             style={styles.closeButton}
-                            onPress={() => {confirmation(true); visibility(false)}}
+                            onPress={() => {setConfirmation(true); setVisibility(false)}}
                         >
                             <Text style={styles.buttonText}>Confirmar</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={styles.closeButton}
-                            onPress={() => {confirmation(false); visibility(false)}}
+                            onPress={() => {setConfirmation(false); setVisibility(false)}}
                         >
                             <Text style={styles.buttonText}>Cancelar</Text>
                         </TouchableOpacity>

@@ -5,6 +5,9 @@ import ApiCalls from '../apiCalls';
 import AddEventButton from '../components/AddEventButton/addEventButton';
 const apicall = new ApiCalls();
 const Home = ({route, navigation}) => {
+
+  const {token} = route.params;
+
   const [arrayEvents, setArrayEvents] = useState([]);
   const [page, setPage] = useState(1)
   const callEvents = async (loadPage) => {
@@ -19,7 +22,7 @@ const Home = ({route, navigation}) => {
 
   const formPress = () => {
     navigation.navigate('Form', {
-        
+        token: token,
       });
 }
   const renderItem = ({ item }) => (

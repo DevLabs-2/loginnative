@@ -1,12 +1,14 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, TextInput, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, Picker } from "react-native";
 import EventModal from "../components/EventModal/eventModal";
+import ApiCalls from "../apiCalls";
 
-const Form = () => {
+const Form = ({navigation, route}) => {
+    const {token} = route.params;
 
     const [showModalEvent, setModalEvent] = useState(false);
     const [modalConfirm, setModalConfirm] = useState(undefined);
-    const [event, setEvent] = useState({})
+    const [event, setEvent] = useState({});
 
     const [nombreEvento, setNombreEvento] = useState('');
     const [descripcion, setDescripcion] = useState('');
@@ -17,8 +19,49 @@ const Form = () => {
     const [categoria, setCategoria] = useState('');
     const [ubicacion, setUbicacion] = useState('');
 
+    const [categorias, setCategorias] = useState(null);
+    const [ubicaciones, setUbicaciones] = useState(null)
+    const apiCalls = new ApiCalls();
+    const getCategoriesAndLocations = async () => {
+        setCategorias((await apiCalls.getEventCategories()).map(item => item.name))
+        setUbicaciones((await apiCalls.getEventLocations()).map(item => item.name))
+    }
+
+    //INICIALIZACION
+    useEffect(() => {
+        getCategoriesAndLocations();
+    },[])
+
     const handleSubmit = () => {
         const eventoData = {
+            nombreEvento,
+            descripcion,
+            duracion: parseInt(duracion, 10),
+            maxAsistentes: parseInt(maxAsistentes, 10),
+            precio: parseFloat(precio),
+            fechaInicio,
+            categoria,
+            ubicacion,
+        };
+
+        if (checkBlanks() && checkValidations()) {
+            setEvent(eventoData);
+            setModalEvent(true);
+        } else {
+            alert("Todos los campos deben estar llenos y ser válidos");
+        }
+    };
+
+    //cuando hay confirm del modal, se triggerea esto
+    useEffect(() => {
+        if(modalConfirm){
+            apiCalls.uploadEvent(event);
+            setModalConfirm(false);
+        }
+    },[modalConfirm])
+
+    const checkBlanks = () => {
+        const campos = [
             nombreEvento,
             descripcion,
             duracion,
@@ -26,15 +69,24 @@ const Form = () => {
             precio,
             fechaInicio,
             categoria,
-            ubicacion,
-        };
-        setEvent(eventoData)
-        setModalEvent(true)
+            ubicacion
+        ]; 
+        return campos.every(campo => campo.trim() !== '');
+    };
+
+    const checkValidations = () => {
+        return (
+            Number.isInteger(parseInt(duracion, 10)) &&
+            Number.isInteger(parseInt(maxAsistentes, 10)) &&
+            !isNaN(parseFloat(precio)) &&
+            !isNaN(Date.parse(fechaInicio))
+        );
     };
 
     return (
         <>
-            {showModalEvent && <EventModal event={event} visibility={setModalEvent} confirmation={setModalConfirm}/>}
+            {showModalEvent && <EventModal event={event} visible={showModalEvent} setVisibility={setModalEvent} setConfirmation={setModalConfirm}/>}
+            {categorias !== null && ubicaciones !== null &&
             <View style={styles.container}>
                 <View style={styles.form}>
                     <Text style={styles.label}>Nombre del Evento:</Text>
@@ -44,28 +96,68 @@ const Form = () => {
                     <TextInput style={styles.textarea} value={descripcion} onChangeText={setDescripcion} />
 
                     <Text style={styles.label}>Duración en minutos:</Text>
-                    <TextInput style={styles.input} value={duracion} onChangeText={setDuracion} />
+                    <TextInput 
+                        style={styles.input} 
+                        value={duracion} 
+                        onChangeText={setDuracion} 
+                        keyboardType="numeric" // Permitir solo números
+                    />
 
                     <Text style={styles.label}>Máximo de Asistentes:</Text>
-                    <TextInput style={styles.input} value={maxAsistentes} onChangeText={setMaxAsistentes} />
+                    <TextInput 
+                        style={styles.input} 
+                        value={maxAsistentes} 
+                        onChangeText={setMaxAsistentes} 
+                        keyboardType="numeric" // Permitir solo números
+                    />
 
                     <Text style={styles.label}>Precio:</Text>
-                    <TextInput style={styles.input} value={precio} onChangeText={setPrecio} />
+                    <TextInput 
+                        style={styles.input} 
+                        value={precio} 
+                        onChangeText={setPrecio} 
+                        keyboardType="decimal-pad" // Permitir enteros y decimales
+                    />
 
                     <Text style={styles.label}>Fecha de Inicio:</Text>
-                    <TextInput style={styles.input} value={fechaInicio} onChangeText={setFechaInicio} />
+                    <TextInput 
+                        style={styles.input} 
+                        value={fechaInicio} 
+                        onChangeText={setFechaInicio} 
+                        placeholder="YYYY-MM-DD" // Placeholder para formato de fecha
+                    />
 
                     <Text style={styles.label}>Categoría:</Text>
-                    <TextInput style={styles.select} value={categoria} onChangeText={setCategoria} />
+                    <Picker
+                        selectedValue={categoria}
+                        style={styles.select}
+                        onValueChange={(itemValue) => setCategoria(itemValue)}
+                    >
+                        <Picker.Item label="Seleccione una categoría" value="" />
+                        {categorias.map((cat, index) => (
+                            <Picker.Item key={index} label={cat} value={cat} />
+                        ))}
+                    </Picker>
 
                     <Text style={styles.label}>Ubicación:</Text>
-                    <TextInput style={styles.select} value={ubicacion} onChangeText={setUbicacion} />
+                    <Picker
+                        selectedValue={ubicacion}
+                        style={styles.select}
+                        onValueChange={(itemValue) => setUbicacion(itemValue)}
+                    >
+                        <Picker.Item label="Seleccione una ubicación" value="" />
+                        {ubicaciones.map((ubic, index) => (
+                            <Picker.Item key={index} label={ubic} value={ubic} />
+                        ))}
+                    </Picker>
 
                     <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                         <Text style={styles.buttonText}>Crear Evento</Text>
                     </TouchableOpacity>
                 </View>
             </View>
+            }
+            
         </>
     );
 };
