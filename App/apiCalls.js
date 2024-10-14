@@ -132,4 +132,23 @@ export default class ApiCalls {
             console.error('Error al hacer fetch:', error);
         }
     }
+    uploadSuscribe = async (idEvent, token) => {
+        try {
+            const response = await fetch(`http://${server}/api/event/${idEvent}/enrollment`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+            });
+            let result = false;
+            console.log(response.status)
+            if(response.status === 201){
+                result = true;
+            }
+            return result;
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
 }

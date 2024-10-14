@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, Picker } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, Picker, Switch } from "react-native";
 import EventModal from "../components/EventModal/eventModal";
 import ApiCalls from "../apiCalls";
 
@@ -18,6 +18,7 @@ const Form = ({navigation, route}) => {
     const [fechaInicio, setFechaInicio] = useState('');
     const [categoria, setCategoria] = useState('');
     const [ubicacion, setUbicacion] = useState('');
+    const [habilitado, setHabilitado] = useState('');
 
     const [categorias, setCategorias] = useState(null);
     const [ubicaciones, setUbicaciones] = useState(null);
@@ -51,7 +52,6 @@ const Form = ({navigation, route}) => {
     const handleSubmit = async () => {
         const catId = categoriasObj.find((item) => item.name === categoria).id;
         const ubiId = ubicacionesObj.find((item) => item.name === ubicacion).id;
-
         const eventoData = {
             name: nombreEvento,
             description: descripcion,
@@ -60,10 +60,11 @@ const Form = ({navigation, route}) => {
             start_date: validarFecha(fechaInicio).date,
             duration_in_minutes: parseInt(duracion, 10),
             price: parseFloat(precio),
+            enabled_for_enrollment: habilitado,
             max_assistance: parseInt(maxAsistentes, 10),
             
         };
-
+        console.log(eventoData)
         if (checkBlanks() && checkValidations()) {
             setEvent(eventoData);
             setModalEvent(true);
@@ -117,6 +118,8 @@ const Form = ({navigation, route}) => {
         }
         return result;
     }
+
+    const toggleSwitch = () => setHabilitado(previousState => !previousState);
 
     return (
         <>
@@ -186,7 +189,15 @@ const Form = ({navigation, route}) => {
                             <Picker.Item key={index} label={ubic} value={ubic} />
                         ))}
                     </Picker>
-
+                    <View style={styles.container}>
+                        <Text style={styles.label}>Inscripción {habilitado ? 'Habilitada' : 'Deshabilitada'}</Text>
+                        <Switch
+                            trackColor={{ false: "#767577", true: "#81b0ff" }}
+                            thumbColor={habilitado ? "#f5dd4b" : "#f4f3f4"}
+                            onValueChange={toggleSwitch}
+                            value={habilitado}
+                        />
+                    </View>
                     <TouchableOpacity style={styles.button} onPress={handleSubmit}>
                         <Text style={styles.buttonText}>Crear Evento</Text>
                     </TouchableOpacity>
@@ -203,7 +214,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         padding: 20,
-        backgroundColor: '#f4f4f4',
+
     },
     form: {
         backgroundColor: '#fff',
@@ -218,6 +229,7 @@ const styles = StyleSheet.create({
     },
     label: {
         marginBottom: 5,
+        fontSize: 18,
         color: '#333',
     },
     input: {
