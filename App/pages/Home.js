@@ -9,22 +9,33 @@ const Home = ({route, navigation}) => {
   const {token} = route.params;
 
   const [arrayEvents, setArrayEvents] = useState([]);
-  const [page, setPage] = useState(1)
-  const callEvents = async (loadPage) => {
-    setArrayEvents(await apicall.getEventsByPage(loadPage))
+  const [arrayFiltrado, setArrayFiltrado] = useState([]);
+  const callEvents = async () => {
+    setArrayEvents(await apicall.getAllEvents())
   }
   useEffect(() => {
-    console.log(arrayEvents)
+    setArrayFiltrado(filtrarArray(arrayEvents));
   }, [arrayEvents])
   useEffect(() => {
-    callEvents(page)
-  },[page])
+    callEvents()
+  },[])
 
   const formPress = () => {
     navigation.navigate('Form', {
         token: token,
       });
-}
+  }
+  const filtrarArray = (array) => {
+    let result = [];
+    array.forEach(element => {
+      console.log(element)
+      let date = new Date(element.start_date)
+      if(date.getTime() > Date.now()){
+        result.push(element)
+      } 
+    });
+    return result;
+  }
   const renderItem = ({ item }) => (
     <View style={styles.card}>
         <Text style={styles.title}>{item.name}</Text>
@@ -40,7 +51,7 @@ const Home = ({route, navigation}) => {
   return (
     <>
     <FlatList
-            data={arrayEvents}
+            data={arrayFiltrado}
             renderItem={renderItem}
             keyExtractor={(item) => item.id.toString()}
         />

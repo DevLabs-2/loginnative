@@ -42,6 +42,7 @@ const Form = ({navigation, route}) => {
         
     },[categoriasObj])
     useEffect(() => {
+        console.log(ubicacionesObj)
         if(ubicacionesObj !== null){
             setUbicaciones(ubicacionesObj.map(item => item.name));
         }
@@ -180,7 +181,8 @@ const Form = ({navigation, route}) => {
                         onValueChange={(itemValue) => setUbicacion(itemValue)}
                     >
                         <Picker.Item label="Seleccione una ubicación" value="" />
-                        {ubicaciones.map((ubic, index) => (
+                        {   
+                            ubicaciones.map((ubic, index) => (
                             <Picker.Item key={index} label={ubic} value={ubic} />
                         ))}
                     </Picker>

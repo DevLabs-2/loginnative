@@ -51,9 +51,9 @@ export default class ApiCalls {
         }
     }
 
-    getEventsByPage = async (page) => {
+    getAllEvents = async () => {
         try {
-            const response = await fetch(`http://${server}/api/event/${page-1}`, {
+            const response = await fetch(`http://${server}/api/event/`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -72,7 +72,6 @@ export default class ApiCalls {
     }
 
     uploadEvent = async (eventoData, token) => {
-        console.log(eventoData)
         try {
             const response = await fetch(`http://${server}/api/event/`, {
                 method: 'POST',
@@ -84,7 +83,6 @@ export default class ApiCalls {
             });
     
             const data = await response.json();
-            console.log(response)
             if (!response.ok) {
                 throw new Error(data.message || 'Error al crear el evento');
             }
@@ -109,7 +107,6 @@ export default class ApiCalls {
             }
     
             const data = await response.json();
-            console.log(data)
             return data;
         } catch (error) {
             console.error('Error al hacer fetch:', error);
@@ -130,7 +127,6 @@ export default class ApiCalls {
             }
     
             const data = await response.json();
-            console.log(data)
             return data;
         } catch (error) {
             console.error('Error al hacer fetch:', error);
