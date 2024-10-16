@@ -4,6 +4,7 @@ import EventModal from "../components/EventModal/eventModal";
 import ApiCalls from "../apiCalls";
 import Arrow from "../components/Arrow/arrow";
 import { ScrollView } from "react-native-web";
+import Navbar from "../components/NavBar/NavBar";
 
 const Form = ({navigation, route}) => {
     const {token} = route.params;
@@ -131,6 +132,7 @@ const Form = ({navigation, route}) => {
 
     return (
         <>
+        <Navbar navigation={navigation} token={token}/>
             <ScrollView style={styles.page}>
                 <Arrow style={styles.arrow} onPress={() => {handleBack()}}/>
                 {showModalEvent && <EventModal event={event} visible={showModalEvent} setVisibility={setModalEvent} setConfirmation={setModalConfirm}/>}

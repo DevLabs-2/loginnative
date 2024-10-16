@@ -72,6 +72,7 @@ export default class ApiCalls {
     }
 
     uploadEvent = async (eventoData, token) => {
+        console.log(eventoData)
         try {
             const response = await fetch(`http://${server}/api/event/`, {
                 method: 'POST',

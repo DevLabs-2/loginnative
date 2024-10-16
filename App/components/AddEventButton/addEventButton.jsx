@@ -16,7 +16,7 @@ const AddEventButton = ({onPress}) => {
   const style = StyleSheet.create({
     container: {
         width: "10%",
-        marginTop: -100,
+        marginTop: '-5%'
     },
     btnStyle: {
         

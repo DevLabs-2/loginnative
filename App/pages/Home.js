@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native
 import globalStyles from '../styles';
 import ApiCalls from '../apiCalls';
 import AddEventButton from '../components/AddEventButton/addEventButton';
+import Navbar from '../components/NavBar/NavBar';
 const apicall = new ApiCalls();
 const Home = ({route, navigation}) => {
 
@@ -63,6 +64,7 @@ const Home = ({route, navigation}) => {
 );
   return (
     <>
+    <Navbar navigation={navigation} token={token}/>
     <FlatList
             data={arrayFiltrado}
             renderItem={renderItem}
@@ -82,8 +84,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   boton: {
-    backgroundColor: '#007BFF',
-    
+    backgroundColor: '#61dafb',
     padding: 10,
     borderRadius: 5,
     fontSize: 16,
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
 
   },
   botonText: {
-    color: 'white',
+    color: 'black',
     fontFamily: 'Segoe UI',
     fontWeight: 500,
   },

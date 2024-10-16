@@ -6,6 +6,7 @@ import RegisterScreen from './pages/Register';
 import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Form from './pages/Form';
+import Admin from './pages/Admin';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ const App = () => {
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{headerShown: false}} />
         <Stack.Screen name="Home" component={Home} options={{headerShown: false}} />
         <Stack.Screen name="Form" component={Form} options={{headerShown: false}} />
+        <Stack.Screen name="Admin" component={Admin} options={{headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
   );
