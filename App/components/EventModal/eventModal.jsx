@@ -16,15 +16,13 @@ const EventModal = ({visible, setVisibility, setConfirmation, event}) => {
                 <View style={styles.modalContainer}>
                     <View style={styles.modalContent}>
                         <Text style={styles.modalTitle}>Información del Evento</Text>
-                        <Text>Nombre: {event.nombreEvento}</Text>
-                        <Text>Descripción: {event.descripcion}</Text>
-                        <Text>Duración: {event.duracion} minutos</Text>
-                        <Text>Máximo de Asistentes: {event.maxAsistentes}</Text>
-                        <Text>Precio: {event.precio}</Text>
-                        <Text>Fecha de Inicio: {event.fechaInicio}</Text>
-                        <Text>Categoría: {event.categoria}</Text>
-                        <Text>Ubicación: {event.ubicacion}</Text>
-
+                        <Text>Nombre: {event.name}</Text>
+                        <Text>Descripción: {event.description}</Text>
+                        <Text>Duración: {event.duration_in_minutes} minutos</Text>
+                        <Text>Máximo de Asistentes: {event.max_assistance}</Text>
+                        <Text>Precio: {event.price}</Text>
+                        <Text>Fecha de Inicio: {(event.start_date).toLocaleDateString()}</Text>
+                        <Text>Habilitado para inscribirse: {event.enabled_for_enrollment ? <Text>Si</Text> : <Text>No</Text> }</Text>
                         <View style={styles.container}>
                         <TouchableOpacity
                             style={styles.closeButton}
@@ -49,10 +47,13 @@ const EventModal = ({visible, setVisibility, setConfirmation, event}) => {
 
 const styles = StyleSheet.create({
     container: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
         flex: 1,
-        justifyContent: 'center',
         padding: 20,
         backgroundColor: '#f4f4f4',
+        width:'30%',
     },
     buttonText: {
         color: 'white',

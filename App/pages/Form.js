@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, Picker, Switch } from "react-native";
 import EventModal from "../components/EventModal/eventModal";
 import ApiCalls from "../apiCalls";
+import Arrow from "../components/Arrow/arrow";
+import { ScrollView } from "react-native-web";
 
 const Form = ({navigation, route}) => {
     const {token} = route.params;
@@ -119,97 +121,113 @@ const Form = ({navigation, route}) => {
         return result;
     }
 
+    const handleBack = () => {
+        navigation.navigate('Home', {
+            token: token,
+          });
+    }
+
     const toggleSwitch = () => setHabilitado(previousState => !previousState);
 
     return (
         <>
-            {showModalEvent && <EventModal event={event} visible={showModalEvent} setVisibility={setModalEvent} setConfirmation={setModalConfirm}/>}
-            {categorias !== null && ubicaciones !== null &&
-            <View style={styles.container}>
-                <View style={styles.form}>
-                    <Text style={styles.label}>Nombre del Evento:</Text>
-                    <TextInput style={styles.input} value={nombreEvento} onChangeText={setNombreEvento} />
+            <ScrollView style={styles.page}>
+                <Arrow style={styles.arrow} onPress={() => {handleBack()}}/>
+                {showModalEvent && <EventModal event={event} visible={showModalEvent} setVisibility={setModalEvent} setConfirmation={setModalConfirm}/>}
+                {categorias !== null && ubicaciones !== null &&
+                <View style={styles.container}>
+                    <View style={styles.form}>
+                        <Text style={styles.label}>Nombre del Evento:</Text>
+                        <TextInput style={styles.input} value={nombreEvento} onChangeText={setNombreEvento} />
 
-                    <Text style={styles.label}>Descripción:</Text>
-                    <TextInput style={styles.textarea} value={descripcion} onChangeText={setDescripcion} />
+                        <Text style={styles.label}>Descripción:</Text>
+                        <TextInput style={styles.textarea} value={descripcion} onChangeText={setDescripcion} />
 
-                    <Text style={styles.label}>Duración en minutos:</Text>
-                    <TextInput 
-                        style={styles.input} 
-                        value={duracion} 
-                        onChangeText={setDuracion} 
-                        keyboardType="numeric" // Permitir solo números
-                    />
-
-                    <Text style={styles.label}>Máximo de Asistentes:</Text>
-                    <TextInput 
-                        style={styles.input} 
-                        value={maxAsistentes} 
-                        onChangeText={setMaxAsistentes} 
-                        keyboardType="numeric" // Permitir solo números
-                    />
-
-                    <Text style={styles.label}>Precio:</Text>
-                    <TextInput 
-                        style={styles.input} 
-                        value={precio} 
-                        onChangeText={setPrecio} 
-                        keyboardType="decimal-pad" // Permitir enteros y decimales
-                    />
-
-                    <Text style={styles.label}>Fecha de Inicio:</Text>
-                    <TextInput 
-                        style={styles.input} 
-                        value={fechaInicio} 
-                        onChangeText={setFechaInicio} 
-                        placeholder="YYYY-MM-DD" // Placeholder para formato de fecha
-                    />
-
-                    <Text style={styles.label}>Categoría:</Text>
-                    <Picker
-                        selectedValue={categoria}
-                        style={styles.select}
-                        onValueChange={(itemValue) => setCategoria(itemValue)}
-                    >
-                        <Picker.Item label="Seleccione una categoría" value="" />
-                        {categorias.map((cat, index) => (
-                            <Picker.Item key={index} label={cat} value={cat} />
-                        ))}
-                    </Picker>
-
-                    <Text style={styles.label}>Ubicación:</Text>
-                    <Picker
-                        selectedValue={ubicacion}
-                        style={styles.select}
-                        onValueChange={(itemValue) => setUbicacion(itemValue)}
-                    >
-                        <Picker.Item label="Seleccione una ubicación" value="" />
-                        {   
-                            ubicaciones.map((ubic, index) => (
-                            <Picker.Item key={index} label={ubic} value={ubic} />
-                        ))}
-                    </Picker>
-                    <View style={styles.container}>
-                        <Text style={styles.label}>Inscripción {habilitado ? 'Habilitada' : 'Deshabilitada'}</Text>
-                        <Switch
-                            trackColor={{ false: "#767577", true: "#81b0ff" }}
-                            thumbColor={habilitado ? "#f5dd4b" : "#f4f3f4"}
-                            onValueChange={toggleSwitch}
-                            value={habilitado}
+                        <Text style={styles.label}>Duración en minutos:</Text>
+                        <TextInput 
+                            style={styles.input} 
+                            value={duracion} 
+                            onChangeText={setDuracion} 
+                            keyboardType="numeric" // Permitir solo números
                         />
+
+                        <Text style={styles.label}>Máximo de Asistentes:</Text>
+                        <TextInput 
+                            style={styles.input} 
+                            value={maxAsistentes} 
+                            onChangeText={setMaxAsistentes} 
+                            keyboardType="numeric" // Permitir solo números
+                        />
+
+                        <Text style={styles.label}>Precio:</Text>
+                        <TextInput 
+                            style={styles.input} 
+                            value={precio} 
+                            onChangeText={setPrecio} 
+                            keyboardType="decimal-pad" // Permitir enteros y decimales
+                        />
+
+                        <Text style={styles.label}>Fecha de Inicio:</Text>
+                        <TextInput 
+                            style={styles.input} 
+                            value={fechaInicio} 
+                            onChangeText={setFechaInicio} 
+                            placeholder="YYYY-MM-DD" // Placeholder para formato de fecha
+                        />
+
+                        <Text style={styles.label}>Categoría:</Text>
+                        <Picker
+                            selectedValue={categoria}
+                            style={styles.select}
+                            onValueChange={(itemValue) => setCategoria(itemValue)}
+                        >
+                            <Picker.Item label="Seleccione una categoría" value="" />
+                            {categorias.map((cat, index) => (
+                                <Picker.Item key={index} label={cat} value={cat} />
+                            ))}
+                        </Picker>
+
+                        <Text style={styles.label}>Ubicación:</Text>
+                        <Picker
+                            selectedValue={ubicacion}
+                            style={styles.select}
+                            onValueChange={(itemValue) => setUbicacion(itemValue)}
+                        >
+                            <Picker.Item label="Seleccione una ubicación" value="" />
+                            {   
+                                ubicaciones.map((ubic, index) => (
+                                <Picker.Item key={index} label={ubic} value={ubic} />
+                            ))}
+                        </Picker>
+                        <View style={styles.container}>
+                            <Text style={styles.label}>Inscripción {habilitado ? 'Habilitada' : 'Deshabilitada'}</Text>
+                            <Switch
+                                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                thumbColor={habilitado ? "#f5dd4b" : "#f4f3f4"}
+                                onValueChange={toggleSwitch}
+                                value={habilitado}
+                            />
+                        </View>
+                        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                            <Text style={styles.buttonText}>Crear Evento</Text>
+                        </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                        <Text style={styles.buttonText}>Crear Evento</Text>
-                    </TouchableOpacity>
                 </View>
-            </View>
-            }
-            
+                }
+            </ScrollView>
         </>
     );
 };
 
 const styles = StyleSheet.create({
+    page: {
+        flex: 1,
+        margin: 3,
+    },
+    arrow: {
+        marginLeft: 5,
+        width: 10
+    },
     container: {
         flex: 1,
         justifyContent: 'center',

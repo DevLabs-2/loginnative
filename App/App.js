@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, Alert, Image } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import RegisterScreen from './pages/Register';
