@@ -24,6 +24,19 @@ const Home = ({route, navigation}) => {
   const formPress = () => {
     navigation.navigate('Form', {
         token: token,
+        mode: 'add',
+        eventParam: {
+        id: '',
+        nombreEvento: '',
+        descripcion: '',
+        duracion: '',
+        maxAsistentes: '',
+        precio: '',
+        fechaInicio: '',
+        categoria: '',
+        ubicacion: '',
+        habilitado: ''
+      },
       });
   }
   const filtrarArray = (array) => {

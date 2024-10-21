@@ -7,21 +7,22 @@ import { ScrollView } from "react-native-web";
 import Navbar from "../components/NavBar/NavBar";
 
 const Form = ({navigation, route}) => {
-    const {token} = route.params;
+    const {token, mode, eventParam} = route.params;
 
     const [showModalEvent, setModalEvent] = useState(false);
     const [modalConfirm, setModalConfirm] = useState(undefined);
     const [event, setEvent] = useState({});
 
-    const [nombreEvento, setNombreEvento] = useState('');
-    const [descripcion, setDescripcion] = useState('');
-    const [duracion, setDuracion] = useState('');
-    const [maxAsistentes, setMaxAsistentes] = useState('');
-    const [precio, setPrecio] = useState('');
-    const [fechaInicio, setFechaInicio] = useState('');
-    const [categoria, setCategoria] = useState('');
-    const [ubicacion, setUbicacion] = useState('');
-    const [habilitado, setHabilitado] = useState('');
+    const [id, setId] = useState();
+    const [nombreEvento, setNombreEvento] = useState();
+    const [descripcion, setDescripcion] = useState();
+    const [duracion, setDuracion] = useState();
+    const [maxAsistentes, setMaxAsistentes] = useState();
+    const [precio, setPrecio] = useState();
+    const [fechaInicio, setFechaInicio] = useState();
+    const [categoria, setCategoria] = useState();
+    const [ubicacion, setUbicacion] = useState();
+    const [habilitado, setHabilitado] = useState();
 
     const [categorias, setCategorias] = useState(null);
     const [ubicaciones, setUbicaciones] = useState(null);
@@ -36,19 +37,38 @@ const Form = ({navigation, route}) => {
     }
     
     //INICIALIZACION
-    useEffect(() => {
+    useEffect(()=>{
+        setId(eventParam.id);
+        setNombreEvento(eventParam.nombreEvento);
+        setDescripcion(eventParam.descripcion);
+        setDuracion(eventParam.duracion.toString());
+        setMaxAsistentes(eventParam.maxAsistentes.toString());
+        setPrecio(eventParam.precio.toString());
+        setFechaInicio(eventParam.fechaInicio);
+        setCategoria(eventParam.categoria);
+        setUbicacion(eventParam.ubicacion);
+        setHabilitado(eventParam.habilitado);
+
         getCategoriesAndLocations();
-    },[])
+    },[eventParam])
     useEffect(() => {
+        console.log("a")
         if(categoriasObj !== null){
             setCategorias(categoriasObj.map(item => item.name));
+            const cat = (categoriasObj.find((item) => item.id === categoria))
+            if(cat){
+                setCategoria(cat.name)
+            }
         }
-        
     },[categoriasObj])
     useEffect(() => {
         console.log(ubicacionesObj)
         if(ubicacionesObj !== null){
             setUbicaciones(ubicacionesObj.map(item => item.name));
+            const ubi = (ubicacionesObj.find((item) => item.id === ubicacion))
+            if(ubi){
+                setUbicacion(ubi.name)
+            }
         }
     },[ubicacionesObj])
 
@@ -76,10 +96,16 @@ const Form = ({navigation, route}) => {
         }
     };
 
-    //cuando hay confirm del modal, se triggerea esto
     useEffect(() => {
         if(modalConfirm){
-            apiCalls.uploadEvent(event, token)
+            if(mode === "add"){
+                apiCalls.uploadEvent(event, token)
+            }
+            else {
+                let data = event;
+                data.id = id;
+                apiCalls.updateEvent(data, token)
+            }
             setModalConfirm(false);
         }
     },[modalConfirm])
@@ -95,6 +121,7 @@ const Form = ({navigation, route}) => {
             categoria,
             ubicacion
         ]; 
+        console.log(campos)
         return campos.every(campo => campo.trim() !== '');
     };
 
@@ -211,7 +238,7 @@ const Form = ({navigation, route}) => {
                             />
                         </View>
                         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-                            <Text style={styles.buttonText}>Crear Evento</Text>
+                            <Text style={styles.buttonText}>{mode === "add" ? 'Crear Evento' : 'Editar Evento'}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

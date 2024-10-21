@@ -72,7 +72,6 @@ export default class ApiCalls {
     }
 
     uploadEvent = async (eventoData, token) => {
-        console.log(eventoData)
         try {
             const response = await fetch(`http://${server}/api/event/`, {
                 method: 'POST',
@@ -92,6 +91,48 @@ export default class ApiCalls {
             console.log('Error:', error);
         }
     }
+
+    updateEvent = async (eventoData, token) => {
+        try {
+            const response = await fetch(`http://${server}/api/event/`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(eventoData),
+            });
+    
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'Error al actualizar el evento');
+            }
+            return data;
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
+
+    deleteEvent = async (id, token) => {
+        try {
+            const response = await fetch(`http://${server}/api/event/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+    
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'Error al actualizar el evento');
+            }
+            return data;
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
+
 
     getEventLocations = async (token) => {
         try {

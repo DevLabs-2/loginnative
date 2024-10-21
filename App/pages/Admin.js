@@ -53,6 +53,30 @@ const Admin = ({navigation, route}) => {
         setArrayProximos(proximos);
         });
     }
+
+    const editEvent = (item) => {
+        navigation.navigate('Form', {
+            token: token,
+            mode: 'edit',
+            eventParam: {
+            id: item.id,
+            nombreEvento: item.name,
+            descripcion: item.description,
+            duracion: item.duration_in_minutes,
+            maxAsistentes: item.max_assistance,
+            precio: item.price,
+            fechaInicio: item.start_date,
+            categoria: item.id_event_category,
+            ubicacion: item.id_event_location,
+            habilitado: item.enabled_for_enrollment
+          },
+          });
+      }
+    
+    const deleteEvent = (id) => {
+        apicall.deleteEvent(id, token);
+    }
+
     const renderItem = ({ item }) => {
         let date = new Date(item.start_date)
         return(
@@ -67,12 +91,12 @@ const Admin = ({navigation, route}) => {
                 <View style={styles.buttons}>
                     {date.getTime() > Date.now() && <>
                         <View>
-                            <TouchableOpacity style={styles.boton} onPress={() => {handleSubscribe(item.id)}}>
+                            <TouchableOpacity style={styles.boton} onPress={() => {editEvent(item)}}>
                                 <Text style={styles.botonText}>Editar</Text>
                             </TouchableOpacity>
                         </View>
                         <View>
-                            <TouchableOpacity style={styles.boton} onPress={() => {handleSubscribe(item.id)}}>
+                            <TouchableOpacity style={styles.boton} onPress={() => {deleteEvent(item.id)}}>
                                 <Text style={styles.botonText}>Eliminar</Text>
                             </TouchableOpacity>
                         </View>
@@ -93,7 +117,7 @@ const Admin = ({navigation, route}) => {
             <Navbar navigation={navigation} token={token}/>
             <View style={styles.page}>
                 <View style={styles.section}>
-                   <Text>Próximos Eventos</Text> 
+                   <Text style={styles.title}>Próximos Eventos</Text> 
                    <FlatList
                         data={arrayProximos}
                         renderItem={renderItem}
@@ -101,7 +125,7 @@ const Admin = ({navigation, route}) => {
                     />
                 </View>
                 <View style={styles.section}>
-                    <Text>Eventos Pasados</Text>
+                    <Text style={styles.title}>Eventos Pasados</Text>
                     <FlatList
                         data={arrayPasados}
                         renderItem={renderItem}
@@ -124,7 +148,9 @@ const styles = StyleSheet.create({
 
     },
     section: {
-        width: '50%',
+        marginLeft: '2.5%',
+        marginRight: '2.5%',
+        width: '45%',
     },
     flex: {
         display: 'flex',
