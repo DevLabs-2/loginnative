@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import GradientButton from '../GradientButton/gradientButton';
+import GradientButton from '../GradientButton/index';
 import { View } from 'react-native-web';
 
 

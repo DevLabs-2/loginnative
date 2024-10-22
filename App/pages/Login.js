@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import globalStyles from '../styles';
-import GradientButton from '../components/GradientButton/gradientButton';
+import GradientButton from '../components/GradientButton/index.jsx';
 import ApiCalls from '../apiCalls';
 
 const Login = ({navigation}) => {

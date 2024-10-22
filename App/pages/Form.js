@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, TextInput, StyleSheet, Picker, Switch } from "react-native";
-import EventModal from "../components/EventModal/eventModal";
+import EventModal from "../components/EventModal/index.jsx";
 import ApiCalls from "../apiCalls";
-import Arrow from "../components/Arrow/arrow";
+import Arrow from "../components/Arrow/index.jsx";
 import { ScrollView } from "react-native-web";
-import Navbar from "../components/NavBar/NavBar";
+import Navbar from "../components/NavBar/index.jsx";
 
 const Form = ({navigation, route}) => {
     const {token, mode, eventParam} = route.params;

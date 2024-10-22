@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import globalStyles from '../styles';
 import ApiCalls from '../apiCalls';
-import AddEventButton from '../components/AddEventButton/addEventButton';
-import Navbar from '../components/NavBar/NavBar';
+import AddEventButton from '../components/AddEventButton/index.jsx';
+import Navbar from '../components/NavBar/index.jsx';
 const apicall = new ApiCalls();
 const Home = ({route, navigation}) => {
 

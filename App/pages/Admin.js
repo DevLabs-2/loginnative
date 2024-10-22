@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
-import globalStyles from '../styles';
 import ApiCalls from '../apiCalls';
-import AddEventButton from '../components/AddEventButton/addEventButton';
-import Navbar from '../components/NavBar/NavBar';
+import Navbar from '../components/NavBar/index.jsx';
+import DeleteModal from '../components/DeleteModal/index.jsx';
 
 /*
     Dividir en dos la pantalla 
@@ -27,6 +26,9 @@ const Admin = ({navigation, route}) => {
     const [arrayProximos, setArrayProximos] = useState([]);
     const [arrayPasados, setArrayPasados] = useState([]);
 
+    const [event, setEvent] = useState({});
+    const [showModalDelete, setModalDelete] = useState(false);
+    const [modalConfirm, setModalConfirm] = useState(undefined);
 
     const callEvents = async () => {
       setArrayEvents(await apicall.getAllEvents())
@@ -73,9 +75,18 @@ const Admin = ({navigation, route}) => {
           });
       }
     
-    const deleteEvent = (id) => {
-        apicall.deleteEvent(id, token);
+    //Delete
+    const deleteEvent = (eventoData) => {
+        setEvent(eventoData);
+        setModalDelete(true);
     }
+    useEffect(() => {
+        if(modalConfirm){
+            apicall.deleteEvent(event.id, token);
+            setModalConfirm(false);
+        }
+    },[modalConfirm])
+
 
     const renderItem = ({ item }) => {
         let date = new Date(item.start_date)
@@ -96,14 +107,14 @@ const Admin = ({navigation, route}) => {
                             </TouchableOpacity>
                         </View>
                         <View>
-                            <TouchableOpacity style={styles.boton} onPress={() => {deleteEvent(item.id)}}>
+                            <TouchableOpacity style={styles.boton} onPress={() => {deleteEvent(item)}}>
                                 <Text style={styles.botonText}>Eliminar</Text>
                             </TouchableOpacity>
                         </View>
                     </>
                     }
                     <View>
-                        <TouchableOpacity style={styles.boton} onPress={() => {handleSubscribe(item.id)}}>
+                        <TouchableOpacity style={styles.boton} onPress={() => {handleSubscribe(item)}}>
                             <Text style={styles.botonText}>Participantes</Text>
                         </TouchableOpacity>
                     </View>
@@ -115,6 +126,7 @@ const Admin = ({navigation, route}) => {
     return(
         <>
             <Navbar navigation={navigation} token={token}/>
+            {showModalDelete && <DeleteModal event={event} visible={showModalDelete} setVisibility={setModalDelete} setConfirmation={setModalConfirm}/>}
             <View style={styles.page}>
                 <View style={styles.section}>
                    <Text style={styles.title}>Próximos Eventos</Text> 
