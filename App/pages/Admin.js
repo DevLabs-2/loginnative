@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native
 import ApiCalls from '../apiCalls';
 import Navbar from '../components/NavBar/index.jsx';
 import DeleteModal from '../components/DeleteModal/index.jsx';
+import ParticipantsModal from '../components/ParticipantsModal/index.jsx';
 
 /*
     Dividir en dos la pantalla 
@@ -28,7 +29,8 @@ const Admin = ({navigation, route}) => {
 
     const [event, setEvent] = useState({});
     const [showModalDelete, setModalDelete] = useState(false);
-    const [modalConfirm, setModalConfirm] = useState(undefined);
+    const [modalConfirmDelete, setModalConfirmDelete] = useState(undefined);
+    const [showModalParticipants, setModalParticipants] = useState(false);
 
     const callEvents = async () => {
       setArrayEvents(await apicall.getAllEvents())
@@ -81,11 +83,17 @@ const Admin = ({navigation, route}) => {
         setModalDelete(true);
     }
     useEffect(() => {
-        if(modalConfirm){
+        if(modalConfirmDelete){
             apicall.deleteEvent(event.id, token);
-            setModalConfirm(false);
+            setModalConfirmDelete(false);
         }
-    },[modalConfirm])
+    },[modalConfirmDelete])
+
+    //Participants
+    const modalParticipants = (eventoData) => {
+        setEvent(eventoData);
+        setModalParticipants(true);
+    }
 
 
     const renderItem = ({ item }) => {
@@ -114,7 +122,7 @@ const Admin = ({navigation, route}) => {
                     </>
                     }
                     <View>
-                        <TouchableOpacity style={styles.boton} onPress={() => {handleSubscribe(item)}}>
+                        <TouchableOpacity style={styles.boton} onPress={() => {modalParticipants(item)}}>
                             <Text style={styles.botonText}>Participantes</Text>
                         </TouchableOpacity>
                     </View>
@@ -126,7 +134,8 @@ const Admin = ({navigation, route}) => {
     return(
         <>
             <Navbar navigation={navigation} token={token}/>
-            {showModalDelete && <DeleteModal event={event} visible={showModalDelete} setVisibility={setModalDelete} setConfirmation={setModalConfirm}/>}
+            {showModalDelete && <DeleteModal event={event} visible={showModalDelete} setVisibility={setModalDelete} setConfirmation={setModalConfirmDelete}/>}
+            {showModalParticipants && <ParticipantsModal event={event} visible={showModalParticipants} setVisibility={setModalParticipants}/>}
             <View style={styles.page}>
                 <View style={styles.section}>
                    <Text style={styles.title}>Próximos Eventos</Text> 

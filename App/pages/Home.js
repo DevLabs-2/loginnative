@@ -7,6 +7,7 @@ import Navbar from '../components/NavBar/index.jsx';
 const apicall = new ApiCalls();
 const Home = ({route, navigation}) => {
 
+
   const {token} = route.params;
 
   const [arrayEvents, setArrayEvents] = useState([]);
@@ -75,6 +76,7 @@ const Home = ({route, navigation}) => {
         </View>
     </View>
 );
+
   return (
     <>
     <Navbar navigation={navigation} token={token}/>

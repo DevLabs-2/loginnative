@@ -193,4 +193,38 @@ export default class ApiCalls {
             console.log('Error:', error);
         }
     }
+
+    getEnrollmentsByEventID = async (idEvent) => {
+        try {
+            const response = await fetch(`http://${server}/api/event/${idEvent}/enrollments`, {
+                method: 'GET',
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status} - ${response.statusText}`);
+            }
+    
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
+
+    getUserByID = async (id) => {
+        try {
+            const response = await fetch(`http://${server}/api/user/${id}`, {
+                method: 'GET',
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status} - ${response.statusText}`);
+            }
+    
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    }
 }
